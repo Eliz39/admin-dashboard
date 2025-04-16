@@ -2,12 +2,18 @@ import Link from 'next/link';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { STATIC_PAGES } from '@/constants/static-pages';
+import { withAuth } from '@/lib/withAuth';
 
-function Home() {
+const Home = async () => {
+  const session = await withAuth();
+
   return (
     <div>
       <div className={'my-7'}>
-        <h1 className={'text-7xl'}>Welcome</h1>
+        <h1 className={'mb-4 text-4xl font-semibold text-gray-800'}>
+          Welcome, {session?.user?.name}
+        </h1>
+        <p className={'text-xl text-gray-600'}>Email: {session?.user?.email}</p>
       </div>
       <div>
         <Link href={STATIC_PAGES.users}>
@@ -27,6 +33,6 @@ function Home() {
       </div>
     </div>
   );
-}
+};
 
 export default Home;

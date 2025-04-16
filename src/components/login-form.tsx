@@ -1,5 +1,6 @@
 'use client';
 
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import type React from 'react';
 import { useState } from 'react';
@@ -22,21 +23,25 @@ export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Here you would typically handle authentication
-    // For example: await signIn(email, password)
+    const res = await signIn('credentials', {
+      email,
+      password,
+      redirect: false,
+    });
 
-    console.log('Login attempt with:', { email, password });
+    setIsLoading(false);
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
+    if (res?.ok) {
       router.push(STATIC_PAGES.home);
-    }, 1000);
+    } else {
+      setError('Invalid credentials.');
+    }
   };
 
   return (
@@ -83,12 +88,7 @@ export default function LoginForm() {
             </Button>
           </CardFooter>
         </form>
-        <div className="px-8 pb-6 text-center text-sm">
-          Don&apos;t have an account?{' '}
-          <a href="#" className="text-primary hover:underline">
-            Sign up
-          </a>
-        </div>
+        {error && <p className="px-8 text-sm text-red-600">{error}</p>}
       </Card>
     </div>
   );
