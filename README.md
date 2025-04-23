@@ -1,5 +1,7 @@
 # User management dashboard
 
+Deploy: https://admin-dashboard-kq41-git-main-eliz39s-projects.vercel.app
+
 A **Next.js** project built with **TypeScript**, utilizing the following tools and libraries:
 
 - **React 19.0.0** for building user interfaces.
@@ -21,18 +23,13 @@ Make sure you have the following installed:
 
 ### Installation
 
-1. Clone the repository:
-
-   ```bash
-   git clone git@gitlab.com:procorp-public/frontend-test.git
-   cd frontend-test
-   ```
-
-2. Install dependencies:
+1. Install dependencies:
 
    ```bash
    yarn install
    ```
+   
+2. Create .env.local file following .env.example
 
 ### Development
 
@@ -71,10 +68,6 @@ yarn start
 
 ## Features
 
-- Efficient server-side rendering and static site generation with Next.js.
-- Modular styling using Tailwind CSS.
-- Component-first architecture leveraging Radix UI.
-- Clean and consistent codebase with ESLint and Prettier.
-
----
-Created with ❤️ using Next.js
+- Authentication, app is accessible after login
+- Can filter users list by search
+- Can delete user
