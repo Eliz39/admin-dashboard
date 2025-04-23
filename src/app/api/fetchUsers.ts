@@ -1,6 +1,6 @@
 import { FetchUsersResponse } from '@/app/types/FetchUsersResponse';
-import { getDeletedUserIds } from '@/lib/getDeletedUserIds';
 import { User } from '@/app/types/User';
+import { getDeletedUserIds } from '@/lib/getDeletedUserIds';
 
 export const fetchUsers = async (): Promise<FetchUsersResponse> => {
   const res = await fetch(`https://dummyjson.com/users?limit=1000`);

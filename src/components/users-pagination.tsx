@@ -1,15 +1,16 @@
 'use client';
 
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
+
 import {
   Pagination,
   PaginationContent,
-  PaginationItem,
-  PaginationPrevious,
-  PaginationNext,
   PaginationEllipsis,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
 } from '@/components/ui/pagination';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -31,7 +32,7 @@ export function UsersPagination({ totalPages }: Props) {
   const canGoForward = currentPage < totalPages;
 
   const getPaginationRange = () => {
-    const range: (number | 'ellipsis')[] = [];
+    const range: Array<number | 'ellipsis'> = [];
 
     const startPage = Math.max(2, currentPage - 1);
     const endPage = Math.min(totalPages - 1, currentPage + 1);

@@ -1,6 +1,7 @@
 import { Home, UserIcon } from 'lucide-react';
 import Link from 'next/link';
 
+import { LogoutButton } from '@/components/logout-button';
 import {
   Sidebar,
   SidebarContent,
@@ -14,7 +15,6 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { STATIC_PAGES } from '@/constants/static-pages';
-import { LogoutButton } from '@/components/logout-button';
 
 // Menu items.
 const items = [

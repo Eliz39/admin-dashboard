@@ -2,6 +2,7 @@
 
 import { MoreHorizontal, Search } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
@@ -23,11 +24,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { useUsers } from '@/lib/useUsers';
 import { UsersPagination } from '@/components/users-pagination';
-import { useDeleteUser } from '@/hooks/use-delete-user';
-import { useSearchParams } from 'next/navigation';
 import { PAGE_SIZE } from '@/constants/page-size';
+import { useDeleteUser } from '@/hooks/use-delete-user';
+import { useUsers } from '@/lib/useUsers';
 
 function UsersPage() {
   const [search, setSearch] = useState('');

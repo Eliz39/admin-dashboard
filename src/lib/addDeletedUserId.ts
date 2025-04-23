@@ -1,5 +1,5 @@
-import { getDeletedUserIds } from '@/lib/getDeletedUserIds';
 import { DELETED_IDS_LS_KEY } from '@/constants/local-storage';
+import { getDeletedUserIds } from '@/lib/getDeletedUserIds';
 
 export const addDeletedUserId = (id: number) => {
   if (typeof window === 'undefined') return;
