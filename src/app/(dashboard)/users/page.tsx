@@ -25,10 +25,17 @@ import {
 import { Input } from '@/components/ui/input';
 import { usePaginatedUsers } from '@/lib/usePaginatedUsers';
 import { UsersPagination } from '@/components/users-pagination';
+import { useDeleteUser } from '@/hooks/use-delete-user';
+import { useSearchParams } from 'next/navigation';
 
 function UsersPage() {
+  const searchParams = useSearchParams();
+  const currentPage = Number(searchParams.get('page') || 1);
+
   const { totalUsers, users, totalPages, isLoading, error } =
     usePaginatedUsers(1);
+
+  const deleteUser = useDeleteUser(currentPage);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -112,20 +119,6 @@ function UsersPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
-                    <div className="hidden flex-col items-end md:flex">
-                      <Badge
-                        variant={
-                          user.status === 'online'
-                            ? 'default'
-                            : user.status === 'away'
-                              ? 'destructive'
-                              : 'secondary'
-                        }
-                        className="mb-1"
-                      >
-                        {user.status}
-                      </Badge>
-                    </div>
                     <Badge variant="outline" className="hidden md:inline-flex">
                       {user.role}
                     </Badge>
@@ -146,6 +139,13 @@ function UsersPage() {
                           >
                             View profile
                           </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="text-red-600"
+                          data-variant="destructive"
+                          onClick={() => deleteUser(user.id)}
+                        >
+                          Delete profile
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

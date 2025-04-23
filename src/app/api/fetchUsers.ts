@@ -1,5 +1,7 @@
 import { FetchUsersResponse } from '@/app/types/FetchUsersResponse';
 import { PAGE_SIZE } from '@/constants/page-size';
+import { getDeletedUserIds } from '@/lib/getDeletedUserIds';
+import { User } from '@/app/types/User';
 
 export const fetchUsers = async (page: number): Promise<FetchUsersResponse> => {
   const res = await fetch(
@@ -8,5 +10,11 @@ export const fetchUsers = async (page: number): Promise<FetchUsersResponse> => {
   if (!res.ok) {
     throw new Error('Failed to fetch users');
   }
-  return res.json();
+  const data = await res.json();
+  const deletedIds = getDeletedUserIds();
+
+  return {
+    ...data,
+    users: data.users.filter((user: User) => !deletedIds.includes(user.id)),
+  };
 };
