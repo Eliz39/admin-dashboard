@@ -2,7 +2,7 @@
 
 import { MoreHorizontal, Search } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -23,19 +23,35 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { usePaginatedUsers } from '@/lib/usePaginatedUsers';
+import { useUsers } from '@/lib/useUsers';
 import { UsersPagination } from '@/components/users-pagination';
 import { useDeleteUser } from '@/hooks/use-delete-user';
 import { useSearchParams } from 'next/navigation';
+import { PAGE_SIZE } from '@/constants/page-size';
 
 function UsersPage() {
+  const [search, setSearch] = useState('');
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get('page') || 1);
 
-  const { totalUsers, users, totalPages, isLoading, error } =
-    usePaginatedUsers(1);
+  const { totalUsers, users, isLoading, error } = useUsers();
 
-  const deleteUser = useDeleteUser(currentPage);
+  const deleteUser = useDeleteUser();
+
+  const filteredUsers = users.filter((user) => {
+    const query = search.toLowerCase();
+    return (
+      user.firstName.toLowerCase().includes(query) ||
+      user.lastName.toLowerCase().includes(query) ||
+      user.email.toLowerCase().includes(query) ||
+      user.role?.toLowerCase().includes(query)
+    );
+  });
+  const totalPages = Math.ceil(filteredUsers.length / PAGE_SIZE);
+  const paginatedUsers = filteredUsers.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  );
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -97,10 +113,12 @@ function UsersPage() {
               <Input
                 placeholder="Search users by name, email or role..."
                 className="pl-10"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
             </div>
             <div className="space-y-4">
-              {users.map((user) => (
+              {paginatedUsers.map((user) => (
                 <div
                   key={user.id}
                   className="hover:bg-muted/50 flex items-center justify-between rounded-lg border p-3 transition-colors"
